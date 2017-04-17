@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		278D4F681EA42017000E36AA /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F671EA42017000E36AA /* HealthData.swift */; };
+		278D4F6A1EA420D5000E36AA /* FatSampleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F691EA420D5000E36AA /* FatSampleDataSource.swift */; };
+		278D4F6C1EA42344000E36AA /* FatSampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F6B1EA42344000E36AA /* FatSampleCell.swift */; };
+		278D4F6E1EA42577000E36AA /* HealthKitAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F6D1EA42577000E36AA /* HealthKitAPI.swift */; };
+		278D4F701EA429F8000E36AA /* FatSampleSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F6F1EA429F8000E36AA /* FatSampleSource.swift */; };
 		27A0805A1E7462A300F758BA /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A080591E7462A300F758BA /* AddViewController.swift */; };
 		27AFE8321E67D48F00F11E90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AFE8311E67D48F00F11E90 /* AppDelegate.swift */; };
 		27AFE8341E67D48F00F11E90 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AFE8331E67D48F00F11E90 /* MasterViewController.swift */; };
@@ -20,8 +25,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		278D4F671EA42017000E36AA /* HealthData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
+		278D4F691EA420D5000E36AA /* FatSampleDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatSampleDataSource.swift; sourceTree = "<group>"; };
+		278D4F6B1EA42344000E36AA /* FatSampleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatSampleCell.swift; sourceTree = "<group>"; };
+		278D4F6D1EA42577000E36AA /* HealthKitAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitAPI.swift; sourceTree = "<group>"; };
+		278D4F6F1EA429F8000E36AA /* FatSampleSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatSampleSource.swift; sourceTree = "<group>"; };
 		27A080591E7462A300F758BA /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
-		27A0805B1E7462E100F758BA /* GenericsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = GenericsPlayground.playground; sourceTree = "<group>"; };
 		27AFE82E1E67D48F00F11E90 /* Your Fat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Your Fat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27AFE8311E67D48F00F11E90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		27AFE8331E67D48F00F11E90 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -72,10 +81,14 @@
 				27AFE8311E67D48F00F11E90 /* AppDelegate.swift */,
 				27AFE8331E67D48F00F11E90 /* MasterViewController.swift */,
 				27AFE8351E67D48F00F11E90 /* DetailViewController.swift */,
+				278D4F691EA420D5000E36AA /* FatSampleDataSource.swift */,
+				278D4F6D1EA42577000E36AA /* HealthKitAPI.swift */,
+				278D4F6F1EA429F8000E36AA /* FatSampleSource.swift */,
 				27A080591E7462A300F758BA /* AddViewController.swift */,
 				27AFE8451E67E1EA00F11E90 /* FatSample.swift */,
+				278D4F6B1EA42344000E36AA /* FatSampleCell.swift */,
+				278D4F671EA42017000E36AA /* HealthData.swift */,
 				27F5E6B21E7E316900AA8D2E /* GlobalFunctions.swift */,
-				27A0805B1E7462E100F758BA /* GenericsPlayground.playground */,
 				27AFE8371E67D48F00F11E90 /* Main.storyboard */,
 				27AFE83A1E67D48F00F11E90 /* Assets.xcassets */,
 				27AFE83C1E67D48F00F11E90 /* LaunchScreen.storyboard */,
@@ -171,11 +184,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				27A0805A1E7462A300F758BA /* AddViewController.swift in Sources */,
+				278D4F681EA42017000E36AA /* HealthData.swift in Sources */,
 				27AFE8361E67D48F00F11E90 /* DetailViewController.swift in Sources */,
+				278D4F6E1EA42577000E36AA /* HealthKitAPI.swift in Sources */,
+				278D4F701EA429F8000E36AA /* FatSampleSource.swift in Sources */,
 				27F5E6B31E7E316900AA8D2E /* GlobalFunctions.swift in Sources */,
+				278D4F6A1EA420D5000E36AA /* FatSampleDataSource.swift in Sources */,
 				27AFE8341E67D48F00F11E90 /* MasterViewController.swift in Sources */,
 				27AFE8321E67D48F00F11E90 /* AppDelegate.swift in Sources */,
 				27AFE8461E67E1EA00F11E90 /* FatSample.swift in Sources */,
+				278D4F6C1EA42344000E36AA /* FatSampleCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

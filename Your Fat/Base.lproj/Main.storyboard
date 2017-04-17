@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="RMx-3f-FxP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VuK-k5-YIJ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Master-->
         <scene sceneID="pY4-Hu-kfo">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8fS-aE-onr" sceneMemberID="firstResponder"/>
                 <navigationController title="Master" id="RMx-3f-FxP" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -21,9 +22,21 @@
                         <segue destination="7bK-jq-Zjz" kind="relationship" relationship="rootViewController" id="tsl-Nk-0bq"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8fS-aE-onr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-38" y="-630"/>
+        </scene>
+        <!--Split View Controller-->
+        <scene sceneID="iFP-cG-Esx">
+            <objects>
+                <splitViewController id="VuK-k5-YIJ" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="RMx-3f-FxP" kind="relationship" relationship="masterViewController" id="ZRc-hC-fVH"/>
+                        <segue destination="JaD-jA-ys0" kind="relationship" relationship="detailViewController" id="1mb-yV-Pdb"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ntz-3Y-Rtd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1017" y="-167"/>
         </scene>
         <!--Detail-->
         <scene sceneID="yUG-lL-AsK">
@@ -91,7 +104,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1647.2" y="128.18590704647679"/>
+            <point key="canvasLocation" x="854" y="121"/>
         </scene>
         <!--Add-->
         <scene sceneID="GOA-Sp-dKf">
@@ -269,7 +282,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3370.4000000000001" y="-249.62518740629687"/>
+            <point key="canvasLocation" x="2727" y="-251"/>
         </scene>
         <!--Master-->
         <scene sceneID="smW-Zh-WAh">
@@ -280,56 +293,46 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="46" id="WCw-Qf-5nD" customClass="FatMassTableViewCell" customModule="Your_Fat" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="22" width="375" height="46"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FatSampleCell" rowHeight="75" id="WCw-Qf-5nD" customClass="FatMassTableViewCell" customModule="Your_Fat" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="22" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WCw-Qf-5nD" id="37f-cq-3Eg">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="100 lbs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPs-xs-EdD">
-                                            <rect key="frame" x="8" y="21" width="151" height="22"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100 lbs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPs-xs-EdD">
+                                            <rect key="frame" x="8" y="33" width="55.5" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="(100 lbs at 10.0% bf)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuW-Wq-tCR">
-                                            <rect key="frame" x="93" y="0.0" width="275" height="44"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="205" id="Abd-13-Nt5"/>
-                                                <constraint firstAttribute="height" constant="45" id="Bb5-h9-ukl"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight of Fat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYa-gi-10W">
+                                            <rect key="frame" x="8" y="8" width="84.5" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Weight of Fat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYa-gi-10W">
-                                            <rect key="frame" x="8" y="0.0" width="151" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(100 lbs at 10.0% bf)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuW-Wq-tCR">
+                                            <rect key="frame" x="223" y="27.5" width="144" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="hPs-xs-EdD" firstAttribute="top" secondItem="aYa-gi-10W" secondAttribute="bottom" id="3A6-24-0gV"/>
-                                        <constraint firstItem="iuW-Wq-tCR" firstAttribute="leading" secondItem="hPs-xs-EdD" secondAttribute="trailing" id="3ol-zE-WDw"/>
-                                        <constraint firstAttribute="bottom" secondItem="iuW-Wq-tCR" secondAttribute="bottom" id="9eC-h9-sJO"/>
-                                        <constraint firstItem="iuW-Wq-tCR" firstAttribute="leading" secondItem="aYa-gi-10W" secondAttribute="trailing" id="Hb1-5k-fGX"/>
-                                        <constraint firstItem="iuW-Wq-tCR" firstAttribute="leading" secondItem="aYa-gi-10W" secondAttribute="trailing" id="Lj9-p1-qHI"/>
-                                        <constraint firstItem="aYa-gi-10W" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="8" id="WoI-kz-x6j"/>
-                                        <constraint firstAttribute="trailing" secondItem="iuW-Wq-tCR" secondAttribute="trailing" constant="8" id="ikq-As-uvB"/>
-                                        <constraint firstAttribute="bottom" secondItem="hPs-xs-EdD" secondAttribute="bottom" id="kUv-7Y-liE"/>
-                                        <constraint firstItem="iuW-Wq-tCR" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" id="l3V-oB-9aV"/>
-                                        <constraint firstItem="aYa-gi-10W" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" id="o06-Zy-6Fw"/>
-                                        <constraint firstItem="hPs-xs-EdD" firstAttribute="top" secondItem="aYa-gi-10W" secondAttribute="bottom" id="qm6-bB-TPY"/>
-                                        <constraint firstItem="hPs-xs-EdD" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="8" id="qoV-OA-e0T"/>
+                                        <constraint firstItem="aYa-gi-10W" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="top" constant="8" id="8VI-lg-jgJ"/>
+                                        <constraint firstItem="hPs-xs-EdD" firstAttribute="top" secondItem="aYa-gi-10W" secondAttribute="bottom" constant="8" id="Dna-lz-lsH"/>
+                                        <constraint firstItem="iuW-Wq-tCR" firstAttribute="centerY" secondItem="37f-cq-3Eg" secondAttribute="centerY" id="hcf-Fh-fX5"/>
+                                        <constraint firstItem="aYa-gi-10W" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leading" constant="8" id="iGk-Co-ZBT"/>
+                                        <constraint firstAttribute="trailing" secondItem="iuW-Wq-tCR" secondAttribute="trailing" constant="8" id="r7g-vq-jRx"/>
+                                        <constraint firstItem="hPs-xs-EdD" firstAttribute="leading" secondItem="aYa-gi-10W" secondAttribute="leading" id="whd-2o-63a"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="bodyCompositionLabel" destination="iuW-Wq-tCR" id="PC0-8t-EsF"/>
                                     <outlet property="fatMassLabel" destination="hPs-xs-EdD" id="M5n-bS-axe"/>
-                                    <segue destination="JEX-9P-axG" kind="show" identifier="showDetail" id="WdH-JH-ESU"/>
+                                    <segue destination="JaD-jA-ys0" kind="show" identifier="showDetail" id="WdH-JH-ESU"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -339,13 +342,15 @@
                             <outlet property="delegate" destination="7bK-jq-Zjz" id="RA6-mI-bju"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Master" id="Zdf-7t-Un8">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="History" id="Zdf-7t-Un8">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="eYK-tR-UZm">
                             <connections>
                                 <segue destination="Nly-lx-6RT" kind="presentation" identifier="addFromMasterView" id="qSO-Zs-haP"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
@@ -367,10 +372,29 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yzI-U6-2Nj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2432.8000000000002" y="-248.72563718140933"/>
+            <point key="canvasLocation" x="1849" y="-250"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xsr-Jv-SCW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JaD-jA-ys0" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bKL-Du-abe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="JEX-9P-axG" kind="relationship" relationship="rootViewController" id="Kc4-ws-aAI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fxe-Oc-XvP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-39" y="121"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="qSO-Zs-haP"/>
+        <segue reference="WdH-JH-ESU"/>
     </inferredMetricsTieBreakers>
 </document>

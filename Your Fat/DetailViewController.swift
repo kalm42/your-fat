@@ -11,17 +11,24 @@ import UIKit
 class DetailViewController: UIViewController {
 
     //MARK: Properties
+    var fatSample: FatMassSample? = nil
+    
+    
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var bodyWeightLabel: UILabel!
     @IBOutlet weak var bodyFatPercentageLabel: UILabel!
-    var bwLabelText: String = ""
-    var bfLabelText: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bodyWeightLabel.text = bwLabelText
-        bodyFatPercentageLabel.text = bfLabelText
-        dateLabel.text = formatDate(date: Date())
+        if fatSample != nil {
+            bodyWeightLabel.text = "\(fatSample!.bodyMass.value) \(fatSample!.bodyMass.unit)"
+            bodyFatPercentageLabel.text = "\(fatSample!.bodyFatPercentage.value*100)%"
+            dateLabel.text = formatDate(date: (fatSample!.date))
+        } else {
+            bodyWeightLabel.text = ""
+            bodyFatPercentageLabel.text = ""
+            dateLabel.text = ""
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
 
