@@ -12,27 +12,54 @@ import HealthKit
 class MasterViewController: UITableViewController {
     
     var detailViewController: DetailViewController? = nil
-    let dataSource = FatSampleDataSource()
+    var fms = [FatMassSample]()
+    let client = HealthKitApiClient()
+    let source = FatSampleSource()
 
     override func viewDidLoad() {
+        print("MasterViewController: viewDidLoad()")
+        loadData()
+        
         super.viewDidLoad()
+    }
+    
+    func loadData() {
         if HKHealthStore.isHealthDataAvailable() {
-            HealthKitAPI.requestAccess()
+            print("MasterViewController: Health Data is available")
+            client.getHealthKitAccess() { success in
+                print("MasterViewController: getHKAccess completionhandler")
+                if success {
+                    print("Access requested.")
+                    //check for access
+                    if self.client.hasAccess() {
+                        let source = FatSampleSource()
+                        source.getSamples() { fatMass, error in
+                            if let fatMass = fatMass {
+                                self.fms.append(contentsOf: fatMass)
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                    
+                } else {
+                    print("Access not requested.")
+                }
+            }
+            if client.hasAccess() && fms.count < 1 {
+                source.getSamples() { fatMass, error in
+                    if let fatMass = fatMass {
+                        self.fms.append(contentsOf: fatMass)
+                        self.tableView.reloadData()
+                    }
+                    if let error = error {
+                        print(error)
+                    }
+                    
+                }
+            }
+        } else {
+            print("No health data available")
         }
-        if HealthKitAPI.hasAccess() {
-            self.getBodyMassSamples()
-            self.getBodyFatPercentageSamples()
-        }
-        self.group.notify(queue: .main) {
-            self.makeFatMassSamples()
-            self.tableView.reloadData()
-        }
-        
-        //Add the edit button
-        self.navigationItem.leftBarButtonItem = self.editButtonItem
-        
-        //Set the data source
-        tableView.dataSource = dataSource
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +71,29 @@ class MasterViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Data Source
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        //Instantiate cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FatSampleCell", for: indexPath) as! FatMassTableViewCell
+        
+        //Setup and configure cell.
+        let sample = fms[indexPath.row]
+        
+        cell.fatMassLabel.text = "\(sample.value) \(sample.unit)"
+        cell.bodyCompositionLabel.text = "(\(sample.bodyMass.value) \(sample.bodyMass.unit) at \(sample.bodyFatPercentage.value*100)% bf)"
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return fms.count
+    }
+
+    
     //MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
@@ -54,7 +104,7 @@ class MasterViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let sample = dataSource.samples[indexPath.row]
+                let sample = fms[indexPath.row]
                 
                 guard let navigationController = segue.destination as? UINavigationController, let sampleDetailController = navigationController.topViewController as? DetailViewController else { return }
                 
@@ -67,7 +117,7 @@ class MasterViewController: UITableViewController {
     }
     
     private func selectPerferredUnitOfMeasurement() -> Int {
-        let unit = try! UnitOfMeasurement.fromHK(hk: HealthKitAPI.preferredUnit)
+        let unit = try! UnitOfMeasurement.fromHK(hk: client.getPreferredUnit())
         switch unit {
         case .g:
             fatalError("Not setup to hangle weight in grams")
@@ -93,10 +143,13 @@ class MasterViewController: UITableViewController {
                     let bfs = BodyFatPercentageSample(date: date, value: (bfvalue / 100))
                     let fms = FatMassSample(bodyMass: bms, bodyFatPercentage: bfs)
                     //Persist the data in the health kit
-                    HealthKitAPI.record(fms)
+                    client.record(fms)
+                    
+                    
                     
                     //Add this data to the data model for the display.
-                    dataSource.samples.insert(fms, at: 0)
+                    self.fms.insert(fms, at: 0)
+                    
                     self.tableView.reloadData()
                 }
             }
@@ -104,123 +157,128 @@ class MasterViewController: UITableViewController {
         
     }
     
+    
+    
+    
+    
+    
     //MARK: - HealthStore
-    let bodyMassQuantityType: HKQuantityType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
-    let bodyFatPercentageQuantityType: HKQuantityType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyFatPercentage)!
-    let queue = DispatchQueue(label: "com.kalm42.app.your-fat.fsds", attributes: .concurrent)
-    let group = DispatchGroup()
-    
-    var hkBodyMassSamples: [HKQuantitySample] = []
-    var hkBodyPercentageSamples: [HKQuantitySample] = []
-    
-    func getBodyMassSamples() {
-        getSamplesFromHealthKit(for: self.bodyMassQuantityType)
-        for hkBodyMassSample in self.hkBodyMassSamples {
-            let bodyMassSample = BodyMassSample(sample: hkBodyMassSample, unit: HealthKitAPI.preferredUnit)
-            dataSource.bodyMassSamples.insert(bodyMassSample, at: 0)
-        }
-    }
-    func getBodyFatPercentageSamples() {
-        getSamplesFromHealthKit(for: self.bodyFatPercentageQuantityType)
-        for hkBodyFatPercentageSample in self.hkBodyPercentageSamples {
-            let bodyFatPercentageSample = BodyFatPercentageSample(sample: hkBodyFatPercentageSample)
-            dataSource.bodyFatPercentageSamples.insert(bodyFatPercentageSample, at: 0)
-        }
-    }
-    
-    func getSamplesFromHealthKit(for sampleType: HKSampleType){
-        let endDate = Date() //now
-        let startDate = Date(timeIntervalSinceNow: -TimeLengthInSeconds.oneYear.rawValue)
-        
-        //2b. Query Options
-        let queryOptions = HKQueryOptions()
-        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: queryOptions)
-        
-        //3. How many results can be returned.
-        let resultLimit = Int(HKObjectQueryNoLimit)
-        
-        //4. Run this
-        let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: resultLimit, sortDescriptors: nil) { (query: HKSampleQuery, samples: [HKSample]?, error: Error?) in
-            self.queue.async {
-                self.group.enter()
-                guard let qSamples = samples as? [HKQuantitySample] else {
-                    fatalError("Failed to downcast health kit samples to quantity samples")
-                }
-                if sampleType.isEqual(self.bodyFatPercentageQuantityType) {
-                    self.hkBodyPercentageSamples.append(contentsOf: qSamples)
-                    self.makeBodyFatPercentageSamples()
-                } else {
-                    self.hkBodyMassSamples.append(contentsOf: qSamples)
-                    self.makeBodyMassSamples()
-                }
-            }
-        }
-        dataSource.healthStore.execute(query)
-    }
-    
-    func makeBodyFatPercentageSamples() {
-        for hkBodyFatPercentageSample in hkBodyPercentageSamples {
-            let bfs = BodyFatPercentageSample(sample: hkBodyFatPercentageSample)
-            dataSource.bodyFatPercentageSamples.insert(bfs, at: 0)
-        }
-    }
-    func makeBodyMassSamples(){
-        for hkBodyMassSample in hkBodyMassSamples {
-            let bms = BodyMassSample(sample: hkBodyMassSample, unit: HealthKitAPI.preferredUnit)
-            dataSource.bodyMassSamples.insert(bms, at: 0)
-        }
-    }
-    
-    func makeFatMassSamples() {
-        //BodyMass array trackers.
-        var i: Int = 0
-        let bodyMassArrayLimit = dataSource.bodyMassSamples.count
-        
-        //BodyFat% array trackers.
-        var j: Int = 0
-        let bodyFatPercentageArrayLimit = dataSource.bodyFatPercentageSamples.count
-        
-        //Count will be the larger of the two arrays. Inside the loop we will ensure that the index is still inbounds before attempting to access the array
-        let count = bodyMassArrayLimit > bodyFatPercentageArrayLimit ? bodyMassArrayLimit : bodyFatPercentageArrayLimit
-        
-        //Loop through and find matching records.
-        while i < count {
-            
-            //Are we inbounds of both bodyMass and bodyFat?
-            if i < bodyMassArrayLimit && j < bodyFatPercentageArrayLimit {
-                
-                //setup date variables for better readability
-                let bfDateHigh = dataSource.bodyFatPercentageSamples[j].date + TimeLengthInSeconds.oneHour.rawValue
-                let bfDateLow = dataSource.bodyFatPercentageSamples[j].date - TimeLengthInSeconds.oneHour.rawValue
-                let bmDate = dataSource.bodyMassSamples[i].date
-                
-                // bodyMassSamples[i].date <= bodyFatPercentageSamples[j].date+1hour && >= bf%s-1hour
-                if bmDate <= bfDateHigh && bmDate >= bfDateLow {
-                    
-                    //We have a match, make a fat mass sample, and add it to the array.
-                    let fms = FatMassSample(bodyMass: dataSource.bodyMassSamples[i], bodyFatPercentage: dataSource.bodyFatPercentageSamples[j])
-                    
-                    //now add it to the array
-                    dataSource.samples.insert(fms, at: 0)
-                    
-                    //Increment the index trackers.
-                    i += 1  //increment the bodyMass sample index tracker.
-                    j += 1  //incrememnt the body fat percentage index tracker.
-                    
-                } else if bmDate > dataSource.bodyFatPercentageSamples[j].date {
-                    // The body mass sample occured before the body fat sample date.
-                    i += 1 //increment body mass sample index tracker.
-                    
-                } else {
-                    // The body mass sample date occured after the body fat percentage sample.
-                    j += 1  //increment the bf% index tracker.
-                }
-                
-            } else {
-                break
-            }
-        }
-    }
+//    let bodyMassQuantityType: HKQuantityType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
+//    let bodyFatPercentageQuantityType: HKQuantityType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyFatPercentage)!
+//    let queue = DispatchQueue(label: "com.kalm42.app.your-fat.fsds", attributes: .concurrent)
+//    let group = DispatchGroup()
+//    
+//    var hkBodyMassSamples: [HKQuantitySample] = []
+//    var hkBodyPercentageSamples: [HKQuantitySample] = []
+//    
+//    func getBodyMassSamples() {
+//        getSamplesFromHealthKit(for: self.bodyMassQuantityType)
+//        for hkBodyMassSample in self.hkBodyMassSamples {
+//            let bodyMassSample = BodyMassSample(sample: hkBodyMassSample, unit: HealthKitAPI.preferredUnit)
+//            self.fms.insert(bodyMassSample, at: 0)
+//        }
+//    }
+//    func getBodyFatPercentageSamples() {
+//        getSamplesFromHealthKit(for: self.bodyFatPercentageQuantityType)
+//        for hkBodyFatPercentageSample in self.hkBodyPercentageSamples {
+//            let bodyFatPercentageSample = BodyFatPercentageSample(sample: hkBodyFatPercentageSample)
+//            dataSource.bodyFatPercentageSamples.insert(bodyFatPercentageSample, at: 0)
+//        }
+//    }
+//    
+//    func getSamplesFromHealthKit(for sampleType: HKSampleType){
+//        let endDate = Date() //now
+//        let startDate = Date(timeIntervalSinceNow: -TimeLengthInSeconds.oneYear.rawValue)
+//        
+//        //2b. Query Options
+//        let queryOptions = HKQueryOptions()
+//        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: queryOptions)
+//        
+//        //3. How many results can be returned.
+//        let resultLimit = Int(HKObjectQueryNoLimit)
+//        
+//        //4. Run this
+//        let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: resultLimit, sortDescriptors: nil) { (query: HKSampleQuery, samples: [HKSample]?, error: Error?) in
+//            self.queue.async {
+//                self.group.enter()
+//                guard let qSamples = samples as? [HKQuantitySample] else {
+//                    fatalError("Failed to downcast health kit samples to quantity samples")
+//                }
+//                if sampleType.isEqual(self.bodyFatPercentageQuantityType) {
+//                    self.hkBodyPercentageSamples.append(contentsOf: qSamples)
+//                    self.makeBodyFatPercentageSamples()
+//                } else {
+//                    self.hkBodyMassSamples.append(contentsOf: qSamples)
+//                    self.makeBodyMassSamples()
+//                }
+//            }
+//        }
+//        dataSource.healthStore.execute(query)
+//    }
+//    
+//    func makeBodyFatPercentageSamples() {
+//        for hkBodyFatPercentageSample in hkBodyPercentageSamples {
+//            let bfs = BodyFatPercentageSample(sample: hkBodyFatPercentageSample)
+//            dataSource.bodyFatPercentageSamples.insert(bfs, at: 0)
+//        }
+//    }
+//    func makeBodyMassSamples(){
+//        for hkBodyMassSample in hkBodyMassSamples {
+//            let bms = BodyMassSample(sample: hkBodyMassSample, unit: HealthKitAPI.preferredUnit)
+//            dataSource.bodyMassSamples.insert(bms, at: 0)
+//        }
+//    }
+//    
+//    func makeFatMassSamples() {
+//        //BodyMass array trackers.
+//        var i: Int = 0
+//        let bodyMassArrayLimit = dataSource.bodyMassSamples.count
+//        
+//        //BodyFat% array trackers.
+//        var j: Int = 0
+//        let bodyFatPercentageArrayLimit = dataSource.bodyFatPercentageSamples.count
+//        
+//        //Count will be the larger of the two arrays. Inside the loop we will ensure that the index is still inbounds before attempting to access the array
+//        let count = bodyMassArrayLimit > bodyFatPercentageArrayLimit ? bodyMassArrayLimit : bodyFatPercentageArrayLimit
+//        
+//        //Loop through and find matching records.
+//        while i < count {
+//            
+//            //Are we inbounds of both bodyMass and bodyFat?
+//            if i < bodyMassArrayLimit && j < bodyFatPercentageArrayLimit {
+//                
+//                //setup date variables for better readability
+//                let bfDateHigh = dataSource.bodyFatPercentageSamples[j].date + TimeLengthInSeconds.oneHour.rawValue
+//                let bfDateLow = dataSource.bodyFatPercentageSamples[j].date - TimeLengthInSeconds.oneHour.rawValue
+//                let bmDate = dataSource.bodyMassSamples[i].date
+//                
+//                // bodyMassSamples[i].date <= bodyFatPercentageSamples[j].date+1hour && >= bf%s-1hour
+//                if bmDate <= bfDateHigh && bmDate >= bfDateLow {
+//                    
+//                    //We have a match, make a fat mass sample, and add it to the array.
+//                    let fms = FatMassSample(bodyMass: dataSource.bodyMassSamples[i], bodyFatPercentage: dataSource.bodyFatPercentageSamples[j])
+//                    
+//                    //now add it to the array
+//                    dataSource.samples.insert(fms, at: 0)
+//                    
+//                    //Increment the index trackers.
+//                    i += 1  //increment the bodyMass sample index tracker.
+//                    j += 1  //incrememnt the body fat percentage index tracker.
+//                    
+//                } else if bmDate > dataSource.bodyFatPercentageSamples[j].date {
+//                    // The body mass sample occured before the body fat sample date.
+//                    i += 1 //increment body mass sample index tracker.
+//                    
+//                } else {
+//                    // The body mass sample date occured after the body fat percentage sample.
+//                    j += 1  //increment the bf% index tracker.
+//                }
+//                
+//            } else {
+//                break
+//            }
+//        }
+//    }
 
 }
 
