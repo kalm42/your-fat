@@ -34,7 +34,6 @@ class FatSampleSource {
                             
                             var bodyFat = [BodyFatPercentageSample]()
                             var bodyMass = [BodyMassSample]()
-                            var fatMass = [FatMassSample]()
                             
                             for sample in bodyFatSample {
                                 let drop = BodyFatPercentageSample(sample: sample)
@@ -45,36 +44,8 @@ class FatSampleSource {
                                 let drop = BodyMassSample(sample: sample, unit: self.client.getPreferredUnit())
                                 bodyMass.append(drop)
                             }
+                            let fatMass = self.collate(bodyFat: bodyFat, bodyMass: bodyMass)
                             
-                            if bodyFat.count > bodyMass.count {
-                                //Body fat has more entries so we will attempt to match each entry to a body mass entry
-                                for bf in bodyFat {
-                                    let high = bf.date + TimeLengthInSeconds.oneHour.rawValue
-                                    let low = bf.date - TimeLengthInSeconds.oneHour.rawValue
-                                    
-                                    //loop through all entries in bodyMass until a match is found
-                                    for n in 0..<bodyMass.count {
-                                        if bodyMass[n].date > low && bodyMass[n].date < high { // matches
-                                            let fms = FatMassSample(bodyMass: bodyMass[n], bodyFatPercentage: bf)
-                                            fatMass.append(fms)
-                                            break
-                                        }
-                                    }
-                                }
-                            } else { // either body mass count is greater than or equal to bodyfat count. Ethier way we're okay to use this
-                                for bm in bodyMass {
-                                    let high = bm.date + TimeLengthInSeconds.oneHour.rawValue
-                                    let low = bm.date - TimeLengthInSeconds.oneHour.rawValue
-                                    
-                                    for n in 0..<bodyFat.count {
-                                        if bodyFat[n].date > low && bodyFat[n].date < high { // matches
-                                            let fms = FatMassSample(bodyMass: bm, bodyFatPercentage: bodyFat[n])
-                                            fatMass.append(fms)
-                                            break
-                                        }
-                                    }
-                                }
-                            }
                             if !fatMass.isEmpty {
                                 completion(fatMass, nil)
                             } else {
@@ -91,6 +62,40 @@ class FatSampleSource {
             }
             completion(nil, nil)
         }
+    }
+    
+    func collate(bodyFat: [BodyFatPercentageSample], bodyMass: [BodyMassSample]) -> [FatMassSample] {
+        var fatMass = [FatMassSample]()
+        if bodyFat.count > bodyMass.count {
+            //Body fat has more entries so we will attempt to match each entry to a body mass entry
+            for bf in bodyFat {
+                let high = bf.date + TimeLengthInSeconds.oneHour.rawValue
+                let low = bf.date - TimeLengthInSeconds.oneHour.rawValue
+                
+                //loop through all entries in bodyMass until a match is found
+                for n in 0..<bodyMass.count {
+                    if bodyMass[n].date > low && bodyMass[n].date < high { // matches
+                        let fms = FatMassSample(bodyMass: bodyMass[n], bodyFatPercentage: bf)
+                        fatMass.append(fms)
+                        break
+                    }
+                }
+            }
+        } else { // either body mass count is greater than or equal to bodyfat count. Ethier way we're okay to use this
+            for bm in bodyMass {
+                let high = bm.date + TimeLengthInSeconds.oneHour.rawValue
+                let low = bm.date - TimeLengthInSeconds.oneHour.rawValue
+                
+                for n in 0..<bodyFat.count {
+                    if bodyFat[n].date > low && bodyFat[n].date < high { // matches
+                        let fms = FatMassSample(bodyMass: bm, bodyFatPercentage: bodyFat[n])
+                        fatMass.append(fms)
+                        break
+                    }
+                }
+            }
+        }
+        return fatMass
     }
 }
 

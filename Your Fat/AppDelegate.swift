@@ -22,34 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
         splitViewController.delegate = self
-        
-        //Health Store
-//        if HKHealthStore.isHealthDataAvailable() {
-//            let client = HealthKitApiClient()
-//            
-//            print("AppDelegate: Health Data is available")
-//            client.getHealthKitAccess(){ success in
-//                print("AppDelegate: getHKAccess completionhandler")
-//                if success {
-//                    print("Access requested.")
-//                    //check for access
-//                    if client.hasAccess() {
-//                        let source = FatSampleSource()
-//                        source.getSamples() { fatMass, error in
-//                            var fatSamples = [FatMassSample]()
-//                            if let fatMass = fatMass {
-//                                fatSamples.append(contentsOf: fatMass)
-//                            }
-//                        }
-//                    }
-//                    
-//                } else {
-//                    print("Access not requested.")
-//                }
-//            }
-//        } else {
-//            print("No health data available")
-//        }
 
         return true
     }

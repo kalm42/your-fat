@@ -12,7 +12,6 @@
 		2746E9061EB98E3300F4232E /* BodyMassSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746E9051EB98E3300F4232E /* BodyMassSample.swift */; };
 		2746E9081EB98E8B00F4232E /* UnitOfMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746E9071EB98E8B00F4232E /* UnitOfMeasurement.swift */; };
 		278D4F681EA42017000E36AA /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F671EA42017000E36AA /* HealthData.swift */; };
-		278D4F6A1EA420D5000E36AA /* FatSampleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F691EA420D5000E36AA /* FatSampleDataSource.swift */; };
 		278D4F6C1EA42344000E36AA /* FatSampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F6B1EA42344000E36AA /* FatSampleCell.swift */; };
 		278D4F701EA429F8000E36AA /* FatSampleSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278D4F6F1EA429F8000E36AA /* FatSampleSource.swift */; };
 		27A0805A1E7462A300F758BA /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A080591E7462A300F758BA /* AddViewController.swift */; };
@@ -33,7 +32,6 @@
 		2746E9051EB98E3300F4232E /* BodyMassSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyMassSample.swift; sourceTree = "<group>"; };
 		2746E9071EB98E8B00F4232E /* UnitOfMeasurement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitOfMeasurement.swift; sourceTree = "<group>"; };
 		278D4F671EA42017000E36AA /* HealthData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
-		278D4F691EA420D5000E36AA /* FatSampleDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatSampleDataSource.swift; sourceTree = "<group>"; };
 		278D4F6B1EA42344000E36AA /* FatSampleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatSampleCell.swift; sourceTree = "<group>"; };
 		278D4F6F1EA429F8000E36AA /* FatSampleSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatSampleSource.swift; sourceTree = "<group>"; };
 		27A080591E7462A300F758BA /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
@@ -106,7 +104,6 @@
 				27AFE8311E67D48F00F11E90 /* AppDelegate.swift */,
 				27AFE8331E67D48F00F11E90 /* MasterViewController.swift */,
 				27AFE8351E67D48F00F11E90 /* DetailViewController.swift */,
-				278D4F691EA420D5000E36AA /* FatSampleDataSource.swift */,
 				2746E9011EB9835A00F4232E /* HealthKitApiClient.swift */,
 				278D4F6F1EA429F8000E36AA /* FatSampleSource.swift */,
 				27A080591E7462A300F758BA /* AddViewController.swift */,
@@ -216,7 +213,6 @@
 				27F5E6B31E7E316900AA8D2E /* GlobalFunctions.swift in Sources */,
 				2746E9021EB9835A00F4232E /* HealthKitApiClient.swift in Sources */,
 				2746E9041EB98DC000F4232E /* BodyFatPercentageSample.swift in Sources */,
-				278D4F6A1EA420D5000E36AA /* FatSampleDataSource.swift in Sources */,
 				27AFE8341E67D48F00F11E90 /* MasterViewController.swift in Sources */,
 				27AFE8321E67D48F00F11E90 /* AppDelegate.swift in Sources */,
 				2746E9061EB98E3300F4232E /* BodyMassSample.swift in Sources */,

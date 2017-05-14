@@ -132,25 +132,6 @@ class HealthKitApiClient {
     /***************************************************************************
      
      */
-    func requestAccess() {
-        let dataTypesToWrite: Set = [bodyMassSampleType, bodyFatPercentageSampleType]
-        let dataTypesToRead: Set = [bodyMassQuantityType, bodyFatPercentageQuantityType]
-        // Request auth
-        guard let healthStore = appDelegate?.healthStore else { return }
-        healthStore.requestAuthorization(toShare: dataTypesToWrite, read: dataTypesToRead) { (isSuccess:Bool, error:Error?) in
-            if isSuccess {
-                print("The authorization for HealthKit access was shown to the user.")
-                
-            }
-            if let error = error {
-                print(error)
-            }
-        }
-    }
-    
-    /***************************************************************************
-     
-     */
     public func getPreferredUnit() -> HKUnit {
         var unitToReturn: HKUnit = HKUnit.pound()
         let dataTypesToRead: Set = [bodyMassQuantityType, bodyFatPercentageQuantityType]
@@ -191,8 +172,6 @@ class HealthKitApiClient {
             }
         }
     }
-
-
 
     
 }
